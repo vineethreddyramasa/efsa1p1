@@ -4,28 +4,11 @@ from .models import *
 from .forms import *
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
 
 now = timezone.now()
 def home(request):
    return render(request, 'portfolio/home.html',
                  {'portfolio': home})
-
-
-@login_required
-def change_password(request):
-    if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)  # Important!
-            return redirect('change_password')
-    else:
-        form = PasswordChangeForm(request.user)
-    return render(request, 'registration/change_password.html', {
-        'form': form
-    })
 
 @login_required
 def customer_list(request):
